@@ -26,9 +26,6 @@ class ImageExporter {
   static Uint8List exportToPng(PepperSpriteFile file) {
     final rendered = file.renderImage();
     final png = encodePng(rendered);
-    if (png == null) {
-      throw ExportException('Failed to encode PNG');
-    }
     return Uint8List.fromList(png);
   }
 
@@ -71,9 +68,6 @@ class ImageExporter {
     );
 
     final png = encodePng(frameImage);
-    if (png == null) {
-      throw ExportException('Failed to encode PNG');
-    }
     return Uint8List.fromList(png);
   }
 
