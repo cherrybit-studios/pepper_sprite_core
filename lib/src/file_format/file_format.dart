@@ -114,8 +114,7 @@ class PspFileFormat {
       animations: animations,
       layers: layers,
       colors: colors,
-      tileSize:
-          (fileData['tileSize'] as int?) ?? Defaults.defaultGridSize,
+      tileSize: (fileData['tileSize'] as int?) ?? Defaults.defaultGridSize,
       editorGridSize:
           (fileData['editorGridSize'] as int?) ?? Defaults.defaultGridSize,
       editorGridColor: () {
