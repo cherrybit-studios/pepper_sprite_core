@@ -21,6 +21,7 @@ class PspFileFormat {
     final metadata = {
       'width': file.width,
       'height': file.height,
+      'tileSize': file.tileSize,
       'animations': animationsJson,
       'colors': file.colors.map((c) => [c.a, c.r, c.g, c.b]).toList(),
       'images': imageBytes.map((b) => b.length).toList(),
@@ -113,6 +114,7 @@ class PspFileFormat {
       animations: animations,
       layers: layers,
       colors: colors,
+      tileSize: (fileData['tileSize'] as int?) ?? Defaults.defaultGridSize,
       editorGridSize:
           (fileData['editorGridSize'] as int?) ?? Defaults.defaultGridSize,
       editorGridColor: () {

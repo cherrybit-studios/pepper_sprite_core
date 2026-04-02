@@ -133,6 +133,7 @@ class PepperSpriteFile {
     required this.userId,
     required this.colors,
     required this.layers,
+    required this.tileSize,
     required this.editorGridSize,
     required this.editorGridColor,
     required this.editorBackgroundColor,
@@ -148,6 +149,7 @@ class PepperSpriteFile {
     required String userId,
     required int width,
     required int height,
+    required int tileSize,
   }) {
     return PepperSpriteFile(
       id: id,
@@ -156,6 +158,7 @@ class PepperSpriteFile {
       colors: Defaults.palette,
       layers: [Image(width: width, height: height, numChannels: 4)],
       animations: [],
+      tileSize: tileSize,
       editorGridSize: Defaults.defaultGridSize,
       editorBackgroundColor: Defaults.defaultFileBackgroundColor,
       editorGridColor: Defaults.defaultGridColor,
@@ -188,6 +191,9 @@ class PepperSpriteFile {
   /// Animations
   final List<PepperAnimation> animations;
 
+  /// The size of each tile
+  final int tileSize;
+
   /// Grid size for editor
   final int editorGridSize;
 
@@ -211,6 +217,7 @@ class PepperSpriteFile {
     List<Color>? colors,
     List<Image>? layers,
     List<PepperAnimation>? animations,
+    int? tileSize,
     int? editorGridSize,
     Color? editorGridColor,
     Color? editorBackgroundColor,
@@ -224,6 +231,7 @@ class PepperSpriteFile {
       colors: colors ?? this.colors,
       layers: layers ?? this.layers,
       animations: animations ?? this.animations,
+      tileSize: tileSize ?? this.tileSize,
       editorGridSize: editorGridSize ?? this.editorGridSize,
       editorGridColor: editorGridColor ?? this.editorGridColor,
       editorBackgroundColor:

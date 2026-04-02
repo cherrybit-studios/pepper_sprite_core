@@ -10,6 +10,7 @@ void main() {
         userId: 'user-123',
         width: 32,
         height: 32,
+        tileSize: 16,
       );
 
       expect(file.id, equals('test-id'));
@@ -17,6 +18,7 @@ void main() {
       expect(file.userId, equals('user-123'));
       expect(file.width, equals(32));
       expect(file.height, equals(32));
+      expect(file.tileSize, equals(16));
       expect(file.layers, hasLength(1));
     });
 
@@ -27,11 +29,27 @@ void main() {
         userId: 'user',
         width: 10,
         height: 10,
+        tileSize: 16,
       );
 
       final rendered = file.renderImage();
       expect(rendered.width, equals(10));
       expect(rendered.height, equals(10));
+    });
+
+    test('copyWith updates tileSize', () {
+      final file = PepperSpriteFile.empty(
+        id: 'test',
+        name: 'Test',
+        userId: 'user',
+        width: 16,
+        height: 16,
+        tileSize: 16,
+      );
+
+      final updated = file.copyWith(tileSize: 32);
+      expect(updated.tileSize, equals(32));
+      expect(file.tileSize, equals(16));
     });
   });
 
