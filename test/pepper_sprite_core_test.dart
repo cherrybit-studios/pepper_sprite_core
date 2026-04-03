@@ -85,4 +85,120 @@ void main() {
       expect(Defaults.defaultGridSize, equals(16));
     });
   });
+
+  group('ImageExporter', () {
+    PepperSpriteFile makeFile({int width = 16, int height = 16}) =>
+        PepperSpriteFile.empty(
+          id: 'test',
+          name: 'Test',
+          userId: 'user',
+          width: width,
+          height: height,
+          tileSize: 16,
+        );
+
+    group('exportToPng', () {
+      test('returns PNG bytes without scaling', () {
+        final file = makeFile();
+        final bytes = ImageExporter.exportToPng(file);
+        expect(bytes, isNotEmpty);
+      });
+
+      test('scales image when both scaleWidth and scaleHeight are provided',
+          () {
+        final file = makeFile(width: 16, height: 16);
+        final scaledBytes = ImageExporter.exportToPng(
+          file,
+          scaleWidth: 32,
+          scaleHeight: 32,
+        );
+        expect(scaledBytes, isNotEmpty);
+        // Scaled PNG should differ from un-scaled (larger image)
+        final unscaledBytes = ImageExporter.exportToPng(file);
+        expect(scaledBytes.length, greaterThan(unscaledBytes.length));
+      });
+
+      test('throws ExportException when only scaleWidth is provided', () {
+        final file = makeFile();
+        expect(
+          () => ImageExporter.exportToPng(file, scaleWidth: 32),
+          throwsA(isA<ExportException>()),
+        );
+      });
+
+      test('throws ExportException when only scaleHeight is provided', () {
+        final file = makeFile();
+        expect(
+          () => ImageExporter.exportToPng(file, scaleHeight: 32),
+          throwsA(isA<ExportException>()),
+        );
+      });
+    });
+
+    group('exportAnimationFrameToPng', () {
+      PepperSpriteFile makeFileWithAnimation() {
+        final file = makeFile(width: 32, height: 16);
+        return file.copyWithAddedAnimation(
+          PepperAnimation(
+            name: 'run',
+            tileSize: 16,
+            frames: [
+              PepperAnimationFrame(
+                offset: (0, 0),
+                size: (16, 16),
+                duration: 0.1,
+              ),
+              PepperAnimationFrame(
+                offset: (16, 0),
+                size: (16, 16),
+                duration: 0.1,
+              ),
+            ],
+          ),
+        );
+      }
+
+      test('scales frame when both scaleWidth and scaleHeight are provided',
+          () {
+        final file = makeFileWithAnimation();
+        final scaledBytes = ImageExporter.exportAnimationFrameToPng(
+          file,
+          'run',
+          0,
+          scaleWidth: 32,
+          scaleHeight: 32,
+        );
+        expect(scaledBytes, isNotEmpty);
+        final unscaledBytes =
+            ImageExporter.exportAnimationFrameToPng(file, 'run', 0);
+        expect(scaledBytes.length, greaterThan(unscaledBytes.length));
+      });
+
+      test('throws ExportException when only scaleWidth is provided', () {
+        final file = makeFileWithAnimation();
+        expect(
+          () => ImageExporter.exportAnimationFrameToPng(
+            file,
+            'run',
+            0,
+            scaleWidth: 32,
+          ),
+          throwsA(isA<ExportException>()),
+        );
+      });
+
+      test('throws ExportException when only scaleHeight is provided', () {
+        final file = makeFileWithAnimation();
+        expect(
+          () => ImageExporter.exportAnimationFrameToPng(
+            file,
+            'run',
+            0,
+            scaleHeight: 32,
+          ),
+          throwsA(isA<ExportException>()),
+        );
+      });
+    });
+  });
 }
